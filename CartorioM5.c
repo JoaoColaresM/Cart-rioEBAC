@@ -22,7 +22,7 @@ int registro() // função responsável por criar variáveis/strings
     fclose(arq); // fecha o arquivo
 
     arq = fopen(arquivo, "a"); // abrir arquivo (fopen) e acrescentar "a"
-    fprintf(arq, "\n"); // informação acrescentada no arquivo
+    fprintf(arq, ", "); // informação acrescentada no arquivo
     fclose(arq); // fecha o arquivo
 
     printf("Digite o nome a ser cadastrado: ");
@@ -33,7 +33,7 @@ int registro() // função responsável por criar variáveis/strings
     fclose(arq); // fecha o arquivo
         
     arq = fopen(arquivo, "a"); // abrir arquivo (fopen) e acrescentar "a"
-    fprintf(arq, "\n"); // informação acrescentada no arquivo
+    fprintf(arq, ", "); // informação acrescentada no arquivo
     fclose(arq); // fecha o arquivo
     
     printf("Digite o sobrenome a ser cadastrado: ");
@@ -44,7 +44,7 @@ int registro() // função responsável por criar variáveis/strings
     fclose(arq); // fecha o arquivo
 
     arq = fopen(arquivo, "a"); // abrir arquivo (fopen) e acrescentar "a"
-    fprintf(arq, "\n");
+    fprintf(arq, ", ");
     fclose(arq); // fecha o arquivo
 
     printf("Digite o cargo a ser cadastrado: ");
@@ -54,9 +54,9 @@ int registro() // função responsável por criar variáveis/strings
     fprintf(arq, "Cargo: %s",cargo); // salva o valor da variável cargo no arquivo
     fclose(arq); // fecha o arquivo
     
-    printf("Fim do cadastro.");
+    printf("\nFim do cadastro.\n");
+   
     system( "read -n 1 -s -p \"Pressione uma tecla...\"" ); // system("pause") do macOS
-
     return 0;
 }
 int consulta()
@@ -74,16 +74,17 @@ int consulta()
     if(arq == NULL)
     {
         printf("CPF não encontrado!\n");
+        system( "read -n 1 -s -p \"Pressione uma tecla...\"" );
+        return 0;
     }
 
     while(fgets(conteudo, 200, arq) != NULL)
     {
-        printf("Informações do usuário:\n");
-        printf("%s", conteudo);
+        printf("Informações do usuário:\n%s\n", conteudo);
     }
     
     fclose(arq);
-    system( "read -n 1 -s -p \"Presssione uma tecla...\"" );
+    system( "read -n 1 -s -p \"Pressione uma tecla...\"" );
 
     return 0;
 }
@@ -122,53 +123,70 @@ int indisponivel()
 int sair()
 {
     printf("Obrigado por utilizar o sistma!\n\n");
+    system( "read -n 1 -s -p \"Pressione uma tecla...\"" );
 
     return 0;
 }
 
 int main()
-{
+{   system("clear");
+
     int opcao = 0; // definino variáveis
     int laco = 1;
+    char senha[10] = "admin";
+    char senhadigitada[10] = "";
 
-    for(laco=1;laco==1;)
+    printf("### Cartório da EBAC ###\n\n");
+    printf("digite a senha:\n");
+    scanf("%s", senhadigitada);
+    int comparacao = strcmp(senha, senhadigitada);
+
+    if (comparacao == 0)
     {
-        system("clear");
-        setlocale(LC_ALL, "Portuguese"); // definino lingua
-        
-        printf("### Cartório da EBAC ###\n\n"); // início do menu
-        printf("Escolha as opções do menu:\n\n");
-        printf("\t1 - Registrar nomes\n");
-        printf("\t2 - Consultar nomes\n");
-        printf("\t3 - Deletar nomes\n");
-        printf("\t4 - Sair do sistema\n\n");
-        printf("Opção: "); // final do menu
+        for(laco=1;laco==1;)
+        {
+            system("clear");
+            setlocale(LC_ALL, "Portuguese"); // definino lingua
+            
+            printf("### Cartório da EBAC ###\n\n"); // início do menu
+            printf("Escolha as opções do menu:\n\n");
+            printf("\t1 - Registrar nomes\n");
+            printf("\t2 - Consultar nomes\n");
+            printf("\t3 - Deletar nomes\n");
+            printf("\t4 - Sair do sistema\n\n");
+            printf("Opção: "); // final do menu
 
-        scanf("%d", &opcao); // armazenando a escolha do usuário
-        system("clear");
-       
-       switch (opcao)
-       {
-        case 1:
-        registro();
-        break;
+            scanf("%d", &opcao); // armazenando a escolha do usuário
+            system("clear");
         
-        case 2:
-        consulta();
-        break;
-       
-        case 3:
-        deletar();
-        break;
+            switch (opcao)
+            {
+                case 1:
+                registro();
+                break;
+                
+                case 2:
+                consulta();
+                break;
+            
+                case 3:
+                deletar();
+                break;
 
-        case 4:
-        sair();
-        return 0;
-        break;
-        
-        default:
-        indisponivel();
-        break;
-       } 
+                case 4:
+                sair();
+                return 0;
+                break;
+                
+                default:
+                indisponivel();
+                break;
+            } 
+        }
+    }
+    else {
+    printf("Senha incorreta!\n");
+    system( "read -n 1 -s -p \"Pressione uma tecla...\"" );
+    main();
     }
 }
